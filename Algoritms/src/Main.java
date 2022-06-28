@@ -30,10 +30,5 @@ public class Main {
         System.out.println("Количество четных чисел в последовательности  равно: " + countEvenNumbers);
         System.out.println("Количество нечетных чисел в последовательности  равно: " + countOddNumbers);
 
-      
-
-
-
     }
-
 }
