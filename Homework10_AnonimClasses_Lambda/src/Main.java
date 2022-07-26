@@ -90,21 +90,14 @@ public class Main {
         System.out.println("Начинается работа метода checkPolindromPropertyOfElement ");
         int[] result = Sequence.filter(testArray, x -> {
             Integer number = x;
-            String s = number.toString();
-            System.out.println(s);
-            char[] chars = s.toCharArray();
+            char[] chars = number.toString().toCharArray();
             int j = -1;
             for (int i = 0; i <= chars.length / 2; i++) {
-                if (chars[i] != chars[chars.length + j]) {
-                    break;
-                }
+                if (chars[i] != chars[chars.length + j]) break;
                 j--;
-                if (i == chars.length / 2) {
-                    return true;
-                }
+                if (i == chars.length / 2) return true;
             }
             return false;
-
         });
         boolean flag = true;
         for (int test : result) {
@@ -114,9 +107,7 @@ public class Main {
             }
 
         }
-        if (flag) {
-            System.out.println("В данном массиве полиндромов нет!");
-        }
+        if (flag) System.out.println("В данном массиве полиндромов нет!");
 
 
     }
