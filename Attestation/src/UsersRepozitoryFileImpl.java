@@ -1,39 +1,51 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
+
+    private final static int RANDOM_MAX_USER_SIZE = new Random().nextInt(1000);
+    private static File file;
+
     private String path;
-    private File file;
+
+
     private Map<Integer, User> userAutentification = new HashMap<>();
 
 
     public UsersRepozitoryFileImpl(String path) {
         this.path = path;
-        this.file = new File(path);
+        file = new File(path);
         dataCaching();
     }
 
     @Override
     public User findById(int id) {
-        return userAutentification.getOrDefault(id, null);
+        //  изящный return
+        //  return userAutentification.getOrDefault(id, null);
+        if (userAutentification.containsKey(id)) {
+            System.out.println("Данные пользователя по запрашиваемому id :\n" + userAutentification.get(id));
+            return userAutentification.get(id);
+        } else {
+            System.out.println("Пользователь с id: " + id + " не найден");
+            return null;
+        }
     }
 
     @Override
     public void create(User user) {
-        // TODO: 20.08.2022 сделать тернарным оператором  userInfoRepository.containsKey(user.getId())?
-        //  allUsers.add(user):System.out.println(" Данный пользователь уже существует");
         if (userAutentification.containsKey(user.getId())) {
             System.out.println("Данный пользователь уже существует");
         } else {
             userAutentification.put(user.getId(), user);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 writer.write(String.valueOf(user));
                 writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -52,8 +64,6 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
 
     @Override
     public void delete(int id) {
-        // TODO: 20.08.2022 сделать тернарным оператором  userInfoRepository.containsKey(id)?
-        //  userAutentification.remove(id):System.out.println(" Данный пользователь не существует в репозитории");
         userAutentification.remove(id);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Map.Entry<Integer, User> userEntry : userAutentification.entrySet()) {
@@ -86,6 +96,28 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
                     "после чего необходимо обновить репозиторий (метод updateRepository()) " +
                     " !");
         }
+    }
+
+    protected static Map<Integer,User> generateUsers() {
+        Map<Integer, User> generatedMap = new HashMap<>();
+
+        String[] randomNames = {"Cергей", "Олег", "Дмитрий", "Максим", "Марсель", "Ренат", "Джон", "Майк", "Оливер", "Борис"};
+        String[] randomSurnames = {"Иванов", "Петров", "Сидоров", "Кузнецов", "Прищепкин", "Самигулин", "Крайков", "Джордан",
+                "Роналдо", "Отстойников"};
+        for (int i = 0; i < RANDOM_MAX_USER_SIZE; i++) {
+            generatedMap.put(i,new User(i, randomNames[new Random().nextInt(randomNames.length)],
+                    randomSurnames[new Random().nextInt(randomSurnames.length)],new Random().nextInt(60), new Random().nextBoolean()));
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (Map.Entry<Integer, User> userEntry : generatedMap.entrySet()) {
+                writer.write(String.valueOf(userEntry.getValue()));
+                writer.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return generatedMap;
     }
 
 }
