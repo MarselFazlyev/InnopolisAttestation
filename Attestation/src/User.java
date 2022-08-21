@@ -55,6 +55,6 @@ public class User {
 
     @Override
     public String toString() {
-        return id + "|" + name + "|" + surname + "|" + age + "|" + hasAJob +"\n";
+        return id + "|" + name + "|" + surname + "|" + age + "|" + hasAJob + "\n";
     }
 }
