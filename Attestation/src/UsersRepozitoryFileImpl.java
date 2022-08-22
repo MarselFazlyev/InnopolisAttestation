@@ -2,22 +2,16 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
 
     private final static int RANDOM_MAX_USER_SIZE = new Random().nextInt(1000);
-    private static File file;
-
-    private String path;
-
-
+    private File file;
     private Map<Integer, User> userAutentification = new HashMap<>();
 
 
-    public UsersRepozitoryFileImpl(String path) {
-        this.path = path;
-        file = new File(path);
+    public UsersRepozitoryFileImpl(File file) {
+        this.file = file;
         dataCaching();
     }
 
@@ -39,6 +33,7 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
         if (userAutentification.containsKey(user.getId())) {
             System.out.println("Данный пользователь уже существует");
         } else {
+            System.out.println("Пользователь " + user.getName() + " успешно добавлен в репозиторий");
             userAutentification.put(user.getId(), user);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 writer.write(String.valueOf(user));
@@ -51,6 +46,9 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
 
     @Override
     public void update(User user) {
+        if (!userAutentification.containsKey(user.getId()))
+            System.out.printf("Пользователь с id %d успешно добавлен в репозиторий !\n", user.getId());
+        else System.out.printf("Информация о пользователе  с id %d  обновлена !\n", user.getId());
         userAutentification.put(user.getId(), user);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Map.Entry<Integer, User> userEntry : userAutentification.entrySet()) {
@@ -73,13 +71,13 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Удаление пользователя с id "+id+ " успешно заверщено!");
     }
-
+    
     private void dataCaching() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(this.file))) {
-            if (!(this.file.createNewFile())) {
-                System.out.println("Файл с адресом пути: " + "\"" + path + "\"" + " уже существует!" +
-                        "\nОсуществляю кэширование текущих данных\n");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            if ((file.exists())) {
+                System.out.println("\nОсуществляется кэширование текущих данных...\n");
             }
             String temp;
             while ((temp = reader.readLine()) != null) {
@@ -98,15 +96,15 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
         }
     }
 
-    protected static Map<Integer,User> generateUsers() {
+    protected static void generateUsers(File file) {
         Map<Integer, User> generatedMap = new HashMap<>();
 
         String[] randomNames = {"Cергей", "Олег", "Дмитрий", "Максим", "Марсель", "Ренат", "Джон", "Майк", "Оливер", "Борис"};
         String[] randomSurnames = {"Иванов", "Петров", "Сидоров", "Кузнецов", "Прищепкин", "Самигулин", "Крайков", "Джордан",
                 "Роналдо", "Отстойников"};
         for (int i = 0; i < RANDOM_MAX_USER_SIZE; i++) {
-            generatedMap.put(i,new User(i, randomNames[new Random().nextInt(randomNames.length)],
-                    randomSurnames[new Random().nextInt(randomSurnames.length)],new Random().nextInt(60), new Random().nextBoolean()));
+            generatedMap.put(i, new User(i, randomNames[new Random().nextInt(randomNames.length)],
+                    randomSurnames[new Random().nextInt(randomSurnames.length)], new Random().nextInt(60), new Random().nextBoolean()));
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Map.Entry<Integer, User> userEntry : generatedMap.entrySet()) {
@@ -116,8 +114,6 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return generatedMap;
     }
 
 }
