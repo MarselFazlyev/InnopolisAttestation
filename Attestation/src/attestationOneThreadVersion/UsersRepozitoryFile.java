@@ -1,3 +1,5 @@
+package attestationThreadsVersion;
+
 public interface UsersRepozitoryFile {
     User findById(int id);
     void create(User user);

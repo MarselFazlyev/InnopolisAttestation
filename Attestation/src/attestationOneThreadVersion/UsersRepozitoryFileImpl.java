@@ -1,13 +1,18 @@
+package attestationThreadsVersion;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
 
     private final static int RANDOM_MAX_USER_SIZE = new Random().nextInt(1000);
     private File file;
     private Map<Integer, User> userAutentification = new HashMap<>();
+    private Lock lock = new ReentrantLock();
 
 
     public UsersRepozitoryFileImpl(File file) {
@@ -71,9 +76,13 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Удаление пользователя с id "+id+ " успешно заверщено!");
+        System.out.println("Удаление пользователя с id " + id + " успешно завершено!");
     }
-    
+
+    protected Lock getLock() {
+        return lock;
+    }
+
     private void dataCaching() {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             if ((file.exists())) {
@@ -101,7 +110,7 @@ public class UsersRepozitoryFileImpl implements UsersRepozitoryFile {
 
         String[] randomNames = {"Cергей", "Олег", "Дмитрий", "Максим", "Марсель", "Ренат", "Джон", "Майк", "Оливер", "Борис"};
         String[] randomSurnames = {"Иванов", "Петров", "Сидоров", "Кузнецов", "Прищепкин", "Самигулин", "Крайков", "Джордан",
-                "Роналдо", "Отстойников"};
+                "Роналдо", "Джависсимо"};
         for (int i = 0; i < RANDOM_MAX_USER_SIZE; i++) {
             generatedMap.put(i, new User(i, randomNames[new Random().nextInt(randomNames.length)],
                     randomSurnames[new Random().nextInt(randomSurnames.length)], new Random().nextInt(60), new Random().nextBoolean()));
