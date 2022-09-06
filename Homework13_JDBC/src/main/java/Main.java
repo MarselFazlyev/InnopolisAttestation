@@ -1,41 +1,27 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
-public class Main {
-    public static void main(String[] args) throws SQLException {
+class Main {
+    public static void main(String[] args) {
+        CrudHuman crudHuman = new CrudHumanImpl();
 
-        CrudHumanImpl crudHuman = new CrudHumanImpl();
+        crudHuman.createHuman(new Human(
+                "Tatiana", "Ivanova", "Valerevna", "Moscow", "BakerStreet", "1",
+                "23", "9302 344556"));
+        crudHuman.createHuman(new Human(
+                "Igor", "Petrov", "Valentinovich", "Riga", "Solnechnaya", "34",
+                "172", "9545 112345"));
+        crudHuman.createHuman(new Human(
+                "Sultan", "Sidorov", "Izecelevich", "Karaganda", "Nursultanovaya", "67",
+                "91", "6789 34561"));
 
-        Human human = new Human("Jora", "Vartanov", "Arsenovich", "Moscow", "111"
-                ,"BakerStreet", "23", "4231456789");
-
-        Human human2 = new Human("Tanya", "Ivanova", "Nikolaevna", "Moscow", "123"
-                ,"Kosygina", "44", "000111234");
-
-        crudHuman.createHuman(human2);
-
-
-
-        System.out.println(crudHuman.getAllHumans());
-
-
-//        Human human = new Human("Jora","Vartanov","Arsenovich","Moscow","BakerStreet"
-//                ,"111","23","4231 456789");
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("INSERT INTO humans (name,lastname,patronymic,city,street,house,flat,numberpassport) VALUES (");
-//        sb.append(human.getName()).append(",")
-//                .append(human.getLastName()).append(",")
-//                .append(human.getPatronymic()).append(",")
-//                .append(human.getCity()).append(",")
-//                .append(human.getHouse()).append(",")
-//                .append(human.getStreet()).append(",")
-//                .append(human.getFlat()).append(",")
-//                .append(human.getNumberpassport()).append(")");
-//
-//        System.out.println(sb);
-
-
+        List<Human> humans = crudHuman.getAllHumans(); //теперь в humans весь список людей из бд
+        Human human = crudHuman.getHumanById(3); //теперь в human находится конкретный человек (если такого id нет, то решение проблемы - на Ваше усмотрение)
+        human.setName("Mitrofan");
+        crudHuman.updateHuman(human); // теперь значения у данного человека в бд должно измениться
+        crudHuman.deleteHuman(human);//после выполнения данной команды - данный человек должен удалиться из бд
+        System.out.println("Итоговый список базы данных: \n" + crudHuman.getAllHumans());
     }
+
+
 }
+
