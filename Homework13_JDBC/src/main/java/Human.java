@@ -9,7 +9,7 @@ public class Human {
     private String flat;
     private String numberpassport;
 
-    public Human(String name, String lastName, String patronymic, String city, String street, String house, String flat, String numberpassport ) {
+    public Human(String name, String lastName, String patronymic, String city, String street, String house, String flat, String numberpassport) {
         this.name = name;
         this.lastName = lastName;
         this.patronymic = patronymic;
@@ -119,7 +119,7 @@ public class Human {
                         " street " + street + "|" +
                         " house " + house + "|" +
                         " flat " + flat + "|" +
-                        " numberpassport " + numberpassport + "|"+"\n"
+                        " numberpassport " + numberpassport + "|" + "\n"
                 ;
     }
 }
