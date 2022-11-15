@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Онлайн-касса музея</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<body>
+    <center>
+        <h1>Онлайн бронирование билетов на экскурсии</h1>
+        <div sec:authorize="hasRole('USER')">
+            This content is only shown to users.
+        </div>
+        <div sec:authorize="hasRole('ADMIN')">
+            This content is only shown to administrators.§§
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            This content is only shown to authenticated users.
+        </div>
+        Authenticated username:
+        <div sec:authentication="username"></div>
+        Authenticated user roles:
+        <div sec:authentication="principal.authorities"></div>
+
+        <ol th:each="program: ${programs}">
+            <li>
+                <a th:href="@{${program.id}}" th:text="${program.name}"/>
+            </li>
+        </ol>
+        <a href="/registration">Регистрация</a>
+        <a href="/login">Вход</a>
+        <a href="/logout">Выход</a>
+    </center>
+</body>
+
+</html>

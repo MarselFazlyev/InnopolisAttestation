@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hello="http://hello">
+
+<head>
+    <title>Онлайн-касса музея</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<body>
+    <center>
+        <h1 th:text="${program.name}"></h1>
+        <ol th:each="ticket: ${tickets}">
+            <li class="row">
+                <label class="col" th:text="${ticket.number}"></label>
+                <form class="col" action="/buyTicket" method="post">
+                    <input type="hidden" name="id" th:value="${ticket.id}" />
+                    <input type="submit" value="Купить"/></div>
+                </form>
+                <form class="col" th:action="@{/admin/updateticket/{id}(id=${ticket.id})}" method="get">
+                    <input type="submit" value="Обновить"/></div>
+                </form>
+                <form class="col" th:action="@{/admin/deleteticket/{id}(id=${ticket.id})}" method="post">
+                    <input type="submit" value="Удалить"/></div>
+                </form>
+            </li>
+        </ol>
+        <a th:href="@{/admin/addticket/{id}(id=${program.id})}">Добавить билет</a>
+    </center>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hello="http://hello">
+
+<head>
+    <title>Онлайн-касса музея</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<body>
+    <center>
+        <h1>Register page</h1>
+        <form action="/registration" method="post">
+            <label> E-mail: <input type="text" name="mail"/></label>
+            <label> Username: <input type="text" name="username"/></label>
+            <label> Password: <input type="password" name="password"/></label>
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            <button value="Регистрация">Регистрация</button>
+        </form>
+    </center>
+</body>
+
+</html>

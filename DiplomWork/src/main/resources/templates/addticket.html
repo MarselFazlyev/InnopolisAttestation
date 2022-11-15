@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hello="http://hello">
+
+<head>
+    <title>Онлайн-касса музея</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<body>
+<center>
+    <h1>Добавление билета</h1>
+    <form action="/admin/addticket" method="post">
+        <label> Ticket number: <input type="text" name="number"/></label>
+        <input type="hidden" name="programid" th:value="${programid}" />
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        <button value="Регистрация">Добавить</button>
+    </form>
+</center>
+</body>
+
+</html>
